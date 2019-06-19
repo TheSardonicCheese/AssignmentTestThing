@@ -14,7 +14,7 @@ public float XPRequired;
 		 
 		if (CurrentLevel >= 5)
 		{
-			XPRequired = CurrentLevel*CurrentLevel + 3;
+			XPRequired = CurrentLevel * CurrentLevel + 3;
 		}
 		else
 		{
@@ -23,9 +23,21 @@ public float XPRequired;
 
 		if(Input.GetKeyDown("x"))
 		{
-			//placeholder if statement until defeat enemy function works
-			TotalXP += 1.5f;
-			print("+1.5 xp");
+			//placeholder if statement until defeat small enemy function works
+			TotalXP += .5f;
+			print("+.5 xp");
+		}
+		if(Input.GetKeyDown("c"))
+		{
+			//placeholder if statement until defeat medium enemy function works
+			TotalXP += 2.5f;
+			print("+2.5 xp");
+		}
+		if(Input.GetKeyDown("z"))
+		{
+			//placeholder if statement until defeat large enemy function works
+			TotalXP += 5f;
+			print("+5 xp");
 		}
 		if(TotalXP >= XPRequired)
 		{

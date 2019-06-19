@@ -694,6 +694,7 @@ GameObject:
   - component: {fileID: 1660888374}
   - component: {fileID: 1660888373}
   - component: {fileID: 1660888378}
+  - component: {fileID: 1660888379}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -802,6 +803,20 @@ MonoBehaviour:
   Speed: 6
   JumpSpeed: 8
   Gravity: 20
+--- !u!114 &1660888379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1660888372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf8c783daa0065e45928dc4f08d0d14f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentLevel: 1
+  TotalXP: 0
+  XPRequired: 0
 --- !u!1 &1855065395
 GameObject:
   m_ObjectHideFlags: 0
