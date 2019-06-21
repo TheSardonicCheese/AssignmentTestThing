@@ -6,9 +6,9 @@ public class PlayerController : MonoBehaviour
 {
 	CharacterController controller;
 
-	public float Speed = 6.0f;
-	public float JumpSpeed = 8.0f;
-	public float Gravity =20.0f;
+	public float speed = 6.0f;
+	public float jumpSpeed = 8.0f;
+	public float gravity =20.0f;
 
 	Vector3 MoveDirection = Vector3.zero;
 
@@ -24,20 +24,20 @@ public class PlayerController : MonoBehaviour
 		if(controller.isGrounded)
 		{
 			MoveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-			MoveDirection *= Speed;
+			MoveDirection *= speed;
 
 			if(Input.GetButton("Jump"))
 			{
-				MoveDirection.y = JumpSpeed;
+				MoveDirection.y = jumpSpeed;
 			}
 		}
 
-		MoveDirection.y -= Gravity * Time.deltaTime;
+		MoveDirection.y -= gravity * Time.deltaTime;
 
 		controller.Move(MoveDirection * Time.deltaTime);
 
 		Vector3 lookDir = new Vector3(MoveDirection.x, 0, MoveDirection.z);
 
-		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(MoveDirection), 0.15f);
+		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), 0.15f);
 	}
 }
