@@ -45,20 +45,6 @@ public class Enemy : MonoBehaviour
         }
 
 	}
-	
-
-    public void Attacked(int incDmg, Stats.StatusEffect incEffect)
-    {
-        myStats.health -= incDmg - myStats.defense;
-        myStats.myStatus = incEffect;
-        if (myStats.health <= 0)
-            myStats.isDefeated = true;
-    }
-
-    public void AttackTarget(GameObject Target)
-    {
-        Target.GetComponent<Player>().Attacked(myStats.attack,Stats.StatusEffect.none);
-    }
 
     public void Defeated()
     {

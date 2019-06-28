@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public List<GameObject> EnemyList;
 
     public List<GameObject> EnemySpawnList;
+
+    private bool doBattle = true;
 
     
     public enum GameState
@@ -42,7 +45,11 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
+        if(doBattle)
+        {
+            StartCoroutine(battleGo());
+            doBattle = false;
+        }
     }
 
     public void DamageEnemies()
@@ -80,11 +87,14 @@ public class GameManager : MonoBehaviour
             case CombatState.playerTurn:
                 //decision - attack
                 //attack the enemy
-                playerObj.GetComponent<Player>().AttackTarget(enemyObj);
+                BattleRound(playerObj, enemyObj);
                 //check if enemy is defeated
-                if (enemyObj.GetComponent<Enemy>().myStats.isDefeated)
+                if (enemyObj.GetComponent<Stats>().isDefeated)
+                    //need to remove enemy
+                    RemoveEnemy(enemyObj);
                     SpawnEnemy();
                 //next case, usually enemy turn
+                combatState = CombatState.enemyTurn;
                 break;
 
 
@@ -92,14 +102,28 @@ public class GameManager : MonoBehaviour
             case CombatState.enemyTurn:
                 //decision - attack
                 //attack the player
-                enemyObj.GetComponent<Enemy>().AttackTarget(playerObj);
+                BattleRound(enemyObj, playerObj);
                 //check if player is defeated
-                if (enemyObj.GetComponent<Player>().myStats.isDefeated)
+                if (playerObj.GetComponent<Stats>().isDefeated)
                 {
-                    //go to loss
+                    //go to lose screen
+                    combatState = CombatState.loss;
+                    break;
                 }
                 //next case, usually player turn
+                combatState = CombatState.playerTurn;
                 break;
+
+            case CombatState.victory:
+                //we won
+                Debug.Log("You win!");
+                break;
+
+            case CombatState.loss:
+                //we lose, restart
+                SceneManager.LoadScene("GameOver");
+                break;
+
                
 
 
@@ -111,5 +135,23 @@ public class GameManager : MonoBehaviour
                 //tell player they lost
                 //restart game
         }
+    }
+
+    public void BattleRound(GameObject attacker, GameObject defender)
+    {
+        //makes the fight happen
+        defender.GetComponent<Stats>().Attacked(attacker.GetComponent<Stats>().attack, Stats.StatusEffect.none);
+        Debug.Log(attacker.name +
+            " attacks " +
+            defender.name +
+            " for " +
+            (attacker.GetComponent<Stats>().attack - defender.GetComponent<Stats>().defense) + "damage");
+    }
+    IEnumerator battleGo()
+    {
+        CheckCombatState();
+        yield return new WaitForSeconds(1f);
+        doBattle = true;
+
     }
 }
