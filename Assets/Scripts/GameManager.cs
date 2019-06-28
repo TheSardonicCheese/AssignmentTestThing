@@ -145,7 +145,8 @@ public class GameManager : MonoBehaviour
             " attacks " +
             defender.name +
             " for " +
-            (attacker.GetComponent<Stats>().attack - defender.GetComponent<Stats>().defense) + "damage");
+            (attacker.GetComponent<Stats>().attack * (100/( defender.GetComponent<Stats>().defense + 100))) + 
+            " damage");
     }
     IEnumerator battleGo()
     {
