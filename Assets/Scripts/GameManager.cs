@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public List<GameObject> EnemyList;
+    public List<GameObject> enemyList;
 
-    public List<GameObject> EnemySpawnList;
+    public List<GameObject> enemySpawnList;
 
-    private bool doBattle = true;
+    
 
     
     public enum GameState
@@ -32,13 +32,15 @@ public class GameManager : MonoBehaviour
     public GameObject playerObj;
     public GameObject enemyObj;
 
+    private bool doBattle = true;
+
 
     void Start()
     {
        
         foreach (GameObject Enemy in GameObject.FindGameObjectsWithTag("Enemy"))
         {
-            EnemyList.Add(Enemy);
+            enemyList.Add(Enemy);
         }
 
     }
@@ -47,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         if(doBattle)
         {
+            //set who goes first by comparing speeds
             StartCoroutine(battleGo());
             doBattle = false;
         }
@@ -54,7 +57,7 @@ public class GameManager : MonoBehaviour
 
     public void DamageEnemies()
     {
-        foreach (GameObject enemy in EnemyList)
+        foreach (GameObject enemy in enemyList)
         {
             enemy.GetComponent<Stats>().health -= 10;
         }
@@ -62,21 +65,23 @@ public class GameManager : MonoBehaviour
 
     public void HealEnemies()
     {
-        foreach (GameObject enemy in EnemyList)
+        foreach (GameObject enemy in enemyList)
         {
             enemy.GetComponent<Stats>().health += 10;
         }
     }
 
-    public void RemoveEnemy(GameObject EnemyToRemove)
+    public void RemoveEnemy(GameObject enemyToRemove)
     {
-        EnemyList.Remove(EnemyToRemove);
+        enemyList.Remove(enemyToRemove);
+        enemySpawnList.Remove(enemyToRemove);
     }
 
     public void SpawnEnemy()
     {
         //Spawning an enemy using the size of the list as the maximum of the random range
-        Instantiate(EnemySpawnList[Random.Range(0, EnemySpawnList.Count)], transform);
+        Instantiate(enemySpawnList[Random.Range(0, enemySpawnList.Count)], transform);
+        Debug.Log(" An enemy appeard!");
     }
 
     public void CheckCombatState()
@@ -90,9 +95,12 @@ public class GameManager : MonoBehaviour
                 BattleRound(playerObj, enemyObj);
                 //check if enemy is defeated
                 if (enemyObj.GetComponent<Stats>().isDefeated)
+                {
                     //need to remove enemy
-                    RemoveEnemy(enemyObj);
-                    SpawnEnemy();
+                    combatState = CombatState.victory;
+                    break;
+                }
+                    
                 //next case, usually enemy turn
                 combatState = CombatState.enemyTurn;
                 break;
@@ -116,7 +124,10 @@ public class GameManager : MonoBehaviour
 
             case CombatState.victory:
                 //we won
-                Debug.Log("You win!");
+                Debug.Log("Enemy Defeated");
+                GetComponent<XPandLvlUp>().XPUp(enemyObj);
+                RemoveEnemy(enemyObj);
+                SpawnEnemy();
                 break;
 
             case CombatState.loss:
@@ -145,7 +156,7 @@ public class GameManager : MonoBehaviour
             " attacks " +
             defender.name +
             " for " +
-            (attacker.GetComponent<Stats>().attack * (100/( defender.GetComponent<Stats>().defense + 100))) + 
+            (attacker.GetComponent<Stats>().attack - (attacker.GetComponent<Stats>().attack * (100/( defender.GetComponent<Stats>().defense + 100)))) + 
             " damage");
     }
     IEnumerator battleGo()

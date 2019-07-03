@@ -28,7 +28,7 @@ public class Stats : MonoBehaviour
 
     public void Attacked(int incDmg, StatusEffect incEffect)
     {
-        health -= incDmg * (100 / (defense + 100));
+        health -= incDmg - (incDmg * (100 / (defense + 100)));
         myStatus = incEffect;
         if (health <= 0)
             isDefeated = true;

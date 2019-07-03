@@ -5,11 +5,13 @@ using UnityEngine;
 public class XPandLvlUp : MonoBehaviour 
 {
 public int CurrentLevel = 1;
+
 public float TotalXP = 0;
+
 public float XPRequired;
 
-	
-	void Update () 
+
+    public void XPUp (GameObject enemyDefeated) 
 	{
 		 
 		if (CurrentLevel >= 5)
@@ -21,20 +23,20 @@ public float XPRequired;
 			XPRequired = CurrentLevel * 3 + 4;
 		}
 
-		if(Input.GetKeyDown("x"))
+        if (enemyDefeated.CompareTag("SmallEnemy"))
 		{
 			//placeholder if statement until defeat small enemy function works
 			TotalXP += .5f;
 			print("+.5 xp");
 		}
-		if(Input.GetKeyDown("c"))
-		{
+		if(enemyDefeated.CompareTag("MediumEnemy"))
+        {
 			//placeholder if statement until defeat medium enemy function works
 			TotalXP += 2.5f;
 			print("+2.5 xp");
 		}
-		if(Input.GetKeyDown("z"))
-		{
+		if(enemyDefeated.CompareTag("LargeEnemy"))
+        {
 			//placeholder if statement until defeat large enemy function works
 			TotalXP += 5f;
 			print("+5 xp");
