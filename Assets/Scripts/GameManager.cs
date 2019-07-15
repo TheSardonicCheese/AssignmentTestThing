@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
             enemyList.Add(Enemy);
         }
 
+
+
     }
 
     void Update()
@@ -80,7 +82,7 @@ public class GameManager : MonoBehaviour
     public void SpawnEnemy()
     {
         //Spawning an enemy using the size of the list as the maximum of the random range
-        enemyObj = Instantiate(enemySpawnList[Random.Range(0, enemySpawnList.Count)], transform);
+        enemyObj = Instantiate(enemyList[Random.Range(0, enemyList.Count)], transform);
 
         Debug.Log(" An enemy appeard!");
     }
@@ -128,6 +130,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Enemy Defeated");
                 RemoveEnemy(enemyObj);
                 SpawnEnemy();
+                CheckCombatState();
                 break;
 
             case CombatState.loss:
