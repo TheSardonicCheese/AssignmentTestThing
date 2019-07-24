@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 
 {
     //removing enemies from list
-    private GameObject gameManager;
+    private GameObject battleManager;
 
     public Stats myStats;
     //enemy 0 = small
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        battleManager = GameObject.FindGameObjectWithTag("BattleManager");
 
 		myStats = GetComponent<Stats>();
 
@@ -49,6 +49,6 @@ public class Enemy : MonoBehaviour
     public void Defeated()
     {
         //removing enemies from list
-        gameManager.GetComponent<GameManager>().RemoveEnemy(gameObject);
+        battleManager.GetComponent<BattleManager>().RemoveEnemy(gameObject);
     }
 }
