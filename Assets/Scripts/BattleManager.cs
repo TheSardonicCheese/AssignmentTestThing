@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class BattleManager : MonoBehaviour
 {
     public List<GameObject> enemyList;
 
     public List<GameObject> enemySpawnList;
 
-    
+    //event to look at battle UI script
+    public event System.Action<bool, float> UpdateHealth;
 
     
     public enum GameState
@@ -36,7 +36,20 @@ public class BattleManager : MonoBehaviour
 
     private GameObject gameManager;
 
+    private GameObject battleUIManager;
 
+    private void Awake()
+    {
+        //sub to battle ui manager
+        battleUIManager = GameObject.FindGameObjectWithTag("BattleUIManager");
+        battleUIManager.GetComponent<BattleUIManager>().CallAttack += CheckCombatState;
+        battleUIManager.GetComponent<BattleUIManager>().CallDefend += CheckCombatState;
+        battleUIManager.GetComponent<BattleUIManager>().CallHeal += CheckCombatState;
+        //you would need to probaly have an enum called player decisin whciwould keep track
+        //of what buttonwas pressed then call check combat stae using that
+        //ont the players turn, automaticallyu run during the enemies turn but turn it back to maual
+        //during the players turn (use coroutines and bools to do that)
+    }
     void Start()
     {
        
@@ -170,6 +183,9 @@ public class BattleManager : MonoBehaviour
             " for " +
             (attacker.GetComponent<Stats>().attack - (attacker.GetComponent<Stats>().attack * (100/( defender.GetComponent<Stats>().defense + 100)))) + 
             " damage");
+        float percentage = defender.GetComponent<Stats>().health / defender.GetComponent<Stats>().maxHealth;
+        UpdateHealth(combatState == CombatState.playerTurn, percentage);
+        Debug.Log(percentage);
     }
     IEnumerator battleGo()
     {
