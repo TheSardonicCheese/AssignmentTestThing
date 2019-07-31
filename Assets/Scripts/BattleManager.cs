@@ -34,7 +34,7 @@ public class BattleManager : MonoBehaviour
 
     private bool doBattle = true;
 
-    private GameObject gameManager;
+    private GameObject battleManager;
 
     private GameObject battleUIManager;
 
@@ -57,7 +57,7 @@ public class BattleManager : MonoBehaviour
         {
             enemyList.Add(Enemy);
         }
-        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        battleManager = GameObject.FindGameObjectWithTag("BattleManager");
         SpawnEnemy();
 
     }
@@ -152,7 +152,7 @@ public class BattleManager : MonoBehaviour
             case CombatState.victory:
                 //we won
                 //give xp before leaving the scene.
-                gameManager.GetComponent<GameManager>().TravelToWorld(GameManager.Worlds.OverWorld);
+                battleManager.GetComponent<GameManager>().TravelToWorld(GameManager.Worlds.OverWorld);
                 break;
 
             case CombatState.loss:
