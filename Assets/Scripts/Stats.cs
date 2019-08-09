@@ -10,7 +10,8 @@ public class Stats : MonoBehaviour
     public int attack;
     public int defense;
     public int luck;
-
+    public int curExp;
+    public int level;
     public bool isDefeated;
 
     public enum StatusEffect
